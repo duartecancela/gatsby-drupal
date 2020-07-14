@@ -1,18 +1,53 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, graphql, StaticQuery } from "gatsby"
 
 import Layout from "../components/layout"
-import SEO from "../components/seo"
+
 
 const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <Link to="/page-2/">Go to page 2</Link> <br />
-    <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
-  </Layout>
+  <StaticQuery
+    query={graphql`
+      query {
+        allNodeArticle {
+          edges {
+            node {
+              title
+              body {
+                value
+              }
+              created
+              relationships {
+                field_image {
+                  localFile {
+                    childImageSharp {
+                      fluid(maxWidth: 400, quality: 100) {
+                        ...GatsbyImageSharpFluid
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+      }
+    `}
+    render={data => (
+      <Layout>
+        {data.allNodeArticle.edges.map(edge => (
+  <>
+    <h3><Link to={ edge.node.id }>{ edge.node.title }</Link></h3>
+    <small><em>{ Date(edge.node.created) }</em></small>
+    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem`, width: `100%` }}>
+      {/* <Img fluid={ edge.node.relationships.field_image.localFile.childImageSharp.fluid } /> */}
+    </div>
+    <div dangerouslySetInnerHTML={{ __html: edge.node.body.value.split(' ').splice(0, 50).join(' ') + '...' }}></div>
+  </>
+))}
+      </Layout>
+    )}
+  />
 )
 
 export default IndexPage
+
