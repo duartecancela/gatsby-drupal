@@ -21,7 +21,7 @@ const IndexPage = () => (
                   localFile {
                     url
                      childImageSharp {
-                                  fluid(maxWidth: 400, quality: 100) {
+                                  fluid(maxWidth: 600, quality: 100) {
                                     ...GatsbyImageSharpFluid
                                   }
                      }
@@ -39,7 +39,7 @@ const IndexPage = () => (
                     <>
                         <h3><Link to={edge.node.id}>{edge.node.title}</Link></h3>
                         <small><em>{Date(edge.node.created)}</em></small>
-                        <div style={{maxWidth: `300px`, marginBottom: `1.45rem`, width: `100%`}}>
+                        <div style={{maxWidth: `600px`, marginBottom: `1.45rem`, width: `100%`}}>
                             <Img fluid={edge.node.relationships.field_image.localFile.childImageSharp.fluid}/>
                         </div>
                         <div
